@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <PreferenceCategory
+        android:key="personal_category">
+
+        <EditTextPreference
+            android:key="zip_code"
+            android:title="Zip Code"
+            android:summary="Enter Your Zip Code"
+            android:dialogTitle="Zip Code"
+            android:dialogMessage="Enter Your Zip Code" />
+
+        <EditTextPreference
+            android:key="unit"
+            android:title="Units"
+            android:dialogTitle="Enter Your preferred unit" />
+
+    </PreferenceCategory>
+</PreferenceScreen>
+
+
