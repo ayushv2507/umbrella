@@ -3,7 +3,7 @@ package com.foo.umbrella.ui;
 import com.foo.umbrella.R;
 
 /**
- * Created by ayush on 9/12/2017.
+ * Created by ayush on 9/21/2017.
  */
 
 public class ImageUtils {

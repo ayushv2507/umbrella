@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Umbrella</string>
+    <string name="Today">Today</string>
+    <string name="Tomorrow">Tomorrow</string>
 </resources>

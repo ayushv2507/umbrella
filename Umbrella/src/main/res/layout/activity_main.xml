@@ -60,17 +60,9 @@
         </RelativeLayout>
 
     </FrameLayout>
-    <RelativeLayout
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:padding="8dp"
-        tools:context=".MainActivity">
+        android:layout_height="500dp" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="400dp"
-            android:scrollbars="vertical" />
-
-    </RelativeLayout>
 </LinearLayout>

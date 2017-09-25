@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -30,6 +31,7 @@ import com.foo.umbrella.data.api.WeatherService;
 import com.foo.umbrella.data.model.CurrentObservation;
 import com.foo.umbrella.data.model.ForecastCondition;
 import com.foo.umbrella.data.model.WeatherData;
+import com.foo.umbrella.ui.adapter.GridAdapter;
 import com.foo.umbrella.ui.adapter.WeatherDataAdapter;
 import com.squareup.picasso.Picasso;
 
@@ -49,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
     private FrameLayout current_observation;
     private TextView current_city, current_temperature, current_detail;
     float temperature;
-
     private String temp_unit, zipCode;
-    private Picasso picasso;
     private ArrayList<ForecastCondition> flist;
 
     @Override
@@ -61,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
         current_observation = (FrameLayout) findViewById(R.id.current_observation);
         current_city = (TextView) findViewById(R.id.city_country);
         current_temperature = (TextView) findViewById(R.id.current_temp);
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView() {
         mRecyclerView = (RecyclerView) this.findViewById(R.id.recycler_view);
         mRecyclerView.setHasFixedSize(true);
-        GridLayoutManager layoutManager = new GridLayoutManager(this, 4);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layoutManager);
         mWeatherDataAdapter = new WeatherDataAdapter(getApplicationContext(), flist, temp_unit);
         mRecyclerView.setAdapter(mWeatherDataAdapter);
@@ -105,18 +104,17 @@ public class MainActivity extends AppCompatActivity {
         //TODO figure out how to get this from API
         ApiServicesProvider obj = new ApiServicesProvider((Application) getApplicationContext());
         WeatherService weatherService = obj.getWeatherService();
-        picasso = obj.getPicasso();
         Call<WeatherData> call = weatherService.forecastForZipCallable(zipcode);
         call.enqueue(new Callback<WeatherData>() {
             @Override
             public void onResponse(Call<WeatherData> call, Response<WeatherData> response) {
-                Log.d(TAG, "onResponse called");
+
                 WeatherData weatherData = response.body();
                 CurrentObservation obs = weatherData.getCurrentObservation();
                 List<ForecastCondition> list = new ArrayList<>();
                 list = weatherData.getForecast();
                 displayCurrentObservation(obs);
-                displayForecast(list,picasso);
+                displayForecast(list);
             }
 
             @Override
@@ -129,8 +127,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void displayForecast(List<ForecastCondition> list, Picasso picasso) {
+    private void displayForecast(List<ForecastCondition> list) {
         mWeatherDataAdapter = new WeatherDataAdapter(this, list, temp_unit);
+
         mWeatherDataAdapter.notifyDataSetChanged();
         mRecyclerView.setAdapter(mWeatherDataAdapter);
     }
@@ -144,10 +143,10 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(temp_unit.equalsIgnoreCase("Celsius")){
-        current_temperature.setText(obs.getTempCelsius());
+        current_temperature.setText(obs.getTempCelsius() + (char) 0x00B0);
         }
-        else  current_temperature.setText(obs.getTempFahrenheit());
-        current_detail.setText(obs.getWeatherDescription());
+        else  current_temperature.setText(obs.getTempFahrenheit() + (char) 0x00B0);
+        current_detail.setText(obs.getWeatherDescription() );
     }
 
     public void setPreferences(View view) {
@@ -155,4 +154,3 @@ public class MainActivity extends AppCompatActivity {
         startActivity(pref);
     }
 }
-
